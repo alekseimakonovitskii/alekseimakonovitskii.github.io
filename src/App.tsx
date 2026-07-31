@@ -1,20 +1,19 @@
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react';
 import {
     Box,
     Button,
     Text,
-} from '@chakra-ui/react'
-import FieldRow from './components/FieldRow.js'
-import AppStore from './stores/appStore.js'
-import { useMemo } from 'react'
-
+} from '@chakra-ui/react';
+import { useMemo } from 'react';
+import FieldRow from './components/FieldRow';
+import AppStore from './stores/appStore';
 
 function App() {
-    const appStore = useMemo(() => new AppStore(), [])
-    const userEmail = appStore.getUserEmail()
-    const productId = appStore.getProductId()
-    const productName = appStore.getProductName()
-    const productPrice = appStore.getProductPrice()
+    const appStore = useMemo(() => new AppStore(), []);
+    const userEmail = appStore.getUserEmail();
+    const productId = appStore.getProductId();
+    const productName = appStore.getProductName();
+    const productPrice = appStore.getProductPrice();
 
     return (
         <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
@@ -27,7 +26,7 @@ function App() {
                 <FieldRow
                     label="Email"
                     value={userEmail}
-                    placeholder='Enter email'
+                    placeholder="Enter email"
                     onChange={appStore.setUserEmail}
                 />
                 <Text fontSize="xs" color="gray.400" mb={6}>
@@ -44,19 +43,19 @@ function App() {
 
                 <FieldRow
                     label="ID"
-                    placeholder='Enter id'
+                    placeholder="Enter id"
                     value={productId}
                     onChange={appStore.setProductId}
                 />
                 <FieldRow
                     label="Name"
-                    placeholder='Enter name'
+                    placeholder="Enter name"
                     value={productName}
                     onChange={appStore.setProductName}
                 />
                 <FieldRow
                     label="Price"
-                    placeholder='Enter price'
+                    placeholder="Enter price"
                     value={productPrice}
                     onChange={appStore.setProductPrice}
                 />
@@ -86,7 +85,7 @@ function App() {
                 </Button>
             </Box>
         </Box>
-    )
+    );
 }
 
-export default observer(App)
+export default observer(App);

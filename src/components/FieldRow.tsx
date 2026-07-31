@@ -1,14 +1,14 @@
-import { Flex, Text, Input } from '@chakra-ui/react'
+import { Flex, Text, Input } from '@chakra-ui/react';
 
 type FieldRowProps = {
-    label: string
-    value: string
-    placeholder: string
-    onChange: (v: string) => void
-}
+    label: string;
+    value: string;
+    placeholder?: string;
+    onChange: (v: string) => void;
+};
 
 function FieldRow(props: FieldRowProps) {
-    const { label, value, placeholder, onChange } = props
+    const { label, value, placeholder, onChange } = props;
 
     return (
         <Flex justifyContent="space-between" alignItems="center" mb={2}>
@@ -24,7 +24,7 @@ function FieldRow(props: FieldRowProps) {
                 textAlign="left"
             />
         </Flex>
-    )
+    );
 }
 
-export default FieldRow
+export default FieldRow;

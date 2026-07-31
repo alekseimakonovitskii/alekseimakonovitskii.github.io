@@ -1,4 +1,5 @@
-import { action, makeObservable, observable } from 'mobx'
+import { action, makeObservable, observable } from 'mobx';
+import { EcommercePayload, PixelI, PixelEventPayload } from '../types/pixel';
 
 class AppStore {
     @observable
@@ -50,17 +51,52 @@ class AppStore {
         this.productPrice = value;
     }
 
+    private getPixel(): PixelI | null {
+        return window.acpx || null;
+    }
+
+    private buildEcommercePayload(): EcommercePayload {
+        return {
+            currency: 'USD',
+            value: parseFloat(this.productPrice) || 0,
+            items: [{
+                item_id: this.productId,
+                item_name: this.productName,
+                price: parseFloat(this.productPrice) || 0,
+            }],
+        };
+    }
+
+    private buildPixelPayload(): PixelEventPayload {
+        return {
+            web_event_data: {
+                ecommerce: this.buildEcommercePayload(),
+                user_email: this.userEmail,
+            },
+        };
+    }
+
     @action.bound
     public sendAddToCart() {
-        // eslint-disable-next-line no-console
-        console.log('add_to_cart', {
-            user: { email: this.userEmail },
-            product: {
-                id: this.productId,
-                name: this.productName,
-                price: this.productPrice,
-            },
-        });
+        const pixel = this.getPixel();
+
+        if (!pixel) {
+            // eslint-disable-next-line no-console
+            console.warn('Pixel script not loaded — acpx is undefined');
+
+            return;
+        }
+
+        const payload = this.buildPixelPayload();
+
+        try {
+            pixel.sendEvent('add_to_cart', payload);
+            // eslint-disable-next-line no-console
+            console.log('add_to_cart successfully sent: ', payload);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log('add_to_cart got an error: ', error);
+        }
     }
 
     @action.bound
@@ -72,4 +108,4 @@ class AppStore {
     }
 }
 
-export default AppStore
+export default AppStore;
